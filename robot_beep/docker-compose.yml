@@ -24,7 +24,7 @@ services:
       - 1382:80
     volumes:
       - ./:/var/www
-      - ./docker-compose/nginx:/etc/nginx/conf.d/
+      - ./docker-compose/nginx/server.conf:/etc/nginx/conf.d/
     networks:
       - robotbeep
 
