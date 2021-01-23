@@ -6,7 +6,7 @@ services:
       args:
         user: sammy
         uid: 1000
-      context: ./
+      context: ./src/
       dockerfile: Dockerfile
     image: robot
     container_name: app-robot
@@ -24,8 +24,8 @@ services:
     ports:
       - '2002:80'
     volumes:
-      - ./src:/var/www
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./src/:/var/www
+      - ./nginx:/etc/nginx/conf.d/
     networks:
       - laravel
 
