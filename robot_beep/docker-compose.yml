@@ -1,34 +1,31 @@
-version: '3.7'
-
+version: "3"
 services:
-  app:
+  blog_app:
     build:
-      args:
-        user: sammy
-        uid: 1000
-      context: ./
-      dockerfile: Dockerfile
-    image: robot
-    container_name: app-robot
-    restart: unless-stopped
-    working_dir: /var/www/
+      context: . # The path of the Dockerfile
     volumes:
-      - ./src/:/var/www
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    environment:
+      SERVICE_NAME: blog-app
     networks:
-      - laravel
+      - app_network
 
-  nginx:
-    image: nginx:1.17-alpine
-    container_name: nginx-robot
-    restart: unless-stopped
-    ports:
-      - '2002:80'
+  blog_nginx:
+    build:
+      context: ./docker-nginx/. # The path of the Dockerfile
     volumes:
-      - ./src/:/var/www
-      - ./nginx:/etc/nginx/conf.d/
+      - "./public:/usr/src/app/public"
+    environment:
+      NGINX_FPM_HOST: blog_app
+      NGINX_ROOT: /usr/src/app/public
+    ports:
+      - "2002:80"
+    depends_on:
+      - blog_app
     networks:
-      - laravel
+      - app_network
 
 networks:
-  laravel:
+  app_network:
     driver: bridge
