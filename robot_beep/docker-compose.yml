@@ -1,32 +1,24 @@
-version: "3.8"
+version: "3.7"
+
 services:
-  blog_app:
+  nginx:
+    container_name: con_laravel_sample
+    # lokasi source code
     build:
-      context: . # The path of the Dockerfile
+      context: ./
+      dockerfile: web.dockerfile
+    # path untuk source di dalam docker
     volumes:
-      - .:/usr/src/app
-    working_dir: /usr/src/app
-    environment:
-      SERVICE_NAME: blog-app
-    networks:
-      - app_network
-
-  blog_nginx:
-    build:
-      context: ./docker-nginx/. # The path of the Dockerfile
-    volumes:
-      - "./public:/usr/src/app/public"
-    environment:
-      NGINX_FPM_HOST: blog_app
-      NGINX_ROOT: /usr/src/app/public
+      - ./:/var/www
+    image: webserver_laravel:1.0
     ports:
-      - "2002:80"
-    depends_on:
-      - blog_app
-    networks:
-      - app_network
+      - "8070:80"
 
-networks:
-  app_network:
-    driver: overlay
-    attachable: true
+  app:
+    container_name: app_laravel_sample
+    build:
+      context: ./
+      dockerfile: app.dockerfile
+    image: app_laravel:1.0
+    volumes:
+      - ./:/var/www
