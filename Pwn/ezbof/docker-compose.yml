@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  sort:
+    build: .
+    container_name: ezbof
+    restart: always
+    ports:
+      - '5002:5002'

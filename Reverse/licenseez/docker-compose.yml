@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  sort:
+    build: .
+    container_name: licenseez
+    restart: always
+    ports:
+      - '5001:5001'
